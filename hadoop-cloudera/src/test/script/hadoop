@@ -13,7 +13,10 @@ hadoop distcp hdfs://nn1:8020/foo/bar hdfs://nn2:8020/bar/foo
 # 	copy file from nn1 to nn2
 hadoop distcp -f hdfs://nn1:8020/srclist hdfs://nn2:8020/bar/foo
 
-
-
+# archive : hadoop archive -archiveName name -p <parent> [-r <replication factor>] <src>* <dest>
+hadoop archive -archiveName test.har -p /tmp  file_0 file_1 /tmp
+hdfs dfs -ls /tmp/test.har
+hdfs dfs -ls -R har:///tmp/test.har
+hdfs dfs -rm -R /tmp/test.har
 
 
