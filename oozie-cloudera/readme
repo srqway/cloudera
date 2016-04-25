@@ -1,0 +1,12 @@
+# oozie web page
+http://172.17.0.1:11000
+
+# put example to hdfs
+sudo su -
+hdfs dfs -put /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples hdfs://172.17.0.1:8020/user/root/examples
+
+# run oozie
+#	shell
+oozie job -oozie http://172.17.0.1:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/shell/job.properties -run
+#	hive
+oozie job -oozie http://172.17.0.3:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/hive/job.properties -run
