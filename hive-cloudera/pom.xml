@@ -1,14 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>idv.hsiehpinghan</groupId>
-  <artifactId>hive-cloudera</artifactId>
-  <version>1.0.0</version>
-  <packaging>jar</packaging>
+	<groupId>idv.hsiehpinghan</groupId>
+	<artifactId>hive-cloudera</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
 
-  <name>hive-cloudera</name>
-  <url>http://maven.apache.org</url>
+	<name>hive-cloudera</name>
+	<url>http://maven.apache.org</url>
+
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>cloudera</id>
+			<name>Cloudera Repository</name>
+			<url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+		</repository>
+	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -55,18 +74,18 @@
 		</dependency>
 
 		<!-- hadoop -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.hadoop</groupId> -->
-<!-- 			<artifactId>hadoop-common</artifactId> -->
-<!-- 			<version>${hadoop.version}</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
 
 		<!-- hive -->
-<!-- 		<dependency> -->
-<!-- 		<groupId>org.apache.hive</groupId> -->
-<!-- 		<artifactId>hive-cli</artifactId> -->
-<!-- 		<version>${hive.version}</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-cli</artifactId>
+			<version>${hive.version}</version>
+		</dependency>
 
 		<!-- object-utility -->
 		<dependency>

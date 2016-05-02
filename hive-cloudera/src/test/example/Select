@@ -1,0 +1,44 @@
+# <<shell>>
+# get help
+hive -H
+
+# SQL from command line
+hive -e 'select * from my_table;'
+
+# SQL from command line
+hive -e 'select * from my_table;' > /tmp/my_table
+
+# SQL from files
+hive -f /tmp/hive.sql
+
+# running an initialization script before entering interactive mode
+hive -i /tmp/hive-init.sql
+
+# change log4j property
+hive --hiveconf hive.root.logger=INFO,console
+
+# <<hive shell>>
+# reset
+reset;
+
+# set configuration variable
+set mapred.reduce.tasks=32;
+
+# print all Hadoop and Hive configuration variables.
+set;
+
+# executes a shell command from the Hive shell.
+!ls;
+
+# executes a dfs command from the Hive shell.
+dfs -ls;
+
+# add file
+add FILE /etc/passwd;
+list FILES;
+
+# quit/exit
+quit;
+exit;
+
+
