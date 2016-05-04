@@ -1,0 +1,8 @@
+CREATE TABLE my_table(tinyint_ TINYINT, smallint_ SMALLINT, int_ INT, bigint_ BIGINT, float_ FLOAT, double_ DOUBLE, boolean_ BOOLEAN, string_ STRING, timestamp_ TIMESTAMP, act_ STRING)
+PARTITIONED BY (partition_0 TIMESTAMP, partition_1 String)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+
+LOAD DATA LOCAL INPATH '/tmp/data'
+INTO TABLE my_table
+PARTITION(partition_0='2015-03-01 12:00:00.123456789', partition_1='partition_1');
+

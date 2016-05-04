@@ -1,0 +1,8 @@
+# test UDAF
+maven clean package
+scp /home/thank/git/cloudera/hive-cloudera/target/hive-cloudera-1.0.0.jar hsiehpinghan@220.133.61.15:/tmp
+iptables -A INPUT -s 172.17.0.1 -j ACCEPT
+scp hsiehpinghan@220.133.61.15:/tmp/hive-cloudera-1.0.0.jar /tmp
+hdfs dfs -put /tmp/hive-cloudera-1.0.0.jar /tmp
+#	<<hive console>>
+CREATE FUNCTION VerticleConcatenateUdaf AS 'idv.hsiehpinghan.hivecloudera.udaf.VerticleConcatenateUdaf' USING JAR 'hdfs:///tmp/hive-cloudera-1.0.0.jar';

@@ -31,8 +31,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<testng.version>6.9.4</testng.version>
@@ -45,33 +45,33 @@
 
 	<dependencies>
 		<!-- log4j (for spring logging) -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>log4j</groupId> -->
+<!-- 			<artifactId>log4j</artifactId> -->
+<!-- 			<version>${log4j.version}</version> -->
+<!-- 		</dependency> -->
 
 		<!-- slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.slf4j</groupId> -->
+<!-- 			<artifactId>slf4j-log4j12</artifactId> -->
+<!-- 			<version>${slf4j.version}</version> -->
+<!-- 		</dependency> -->
 
 		<!-- testng -->
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${testng.version}</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.testng</groupId> -->
+<!-- 			<artifactId>testng</artifactId> -->
+<!-- 			<version>${testng.version}</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 
 		<!-- spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-context</artifactId> -->
+<!-- 			<version>${spring.version}</version> -->
+<!-- 		</dependency> -->
 
 		<!-- hadoop -->
 		<dependency>
@@ -88,19 +88,20 @@
 		</dependency>
 
 		<!-- object-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>object-utility</artifactId>
-			<version>${object-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>idv.hsiehpinghan</groupId> -->
+<!-- 			<artifactId>object-utility</artifactId> -->
+<!-- 			<version>${object-utility.version}</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 
 		<!-- test-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>test-utility</artifactId>
-			<version>${test-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>idv.hsiehpinghan</groupId> -->
+<!-- 			<artifactId>test-utility</artifactId> -->
+<!-- 			<version>${test-utility.version}</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 	</dependencies>
+
 </project>
