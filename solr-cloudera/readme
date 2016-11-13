@@ -5,26 +5,39 @@
 {in container}/usr/lib/solr/webapps/solr/WEB-INF/lib
 
 # create solr core
-{in container}hdfs dfs -mkdir /solr
-{in container}sudo -u hdfs hadoop fs -chown solr /solr
-{in container}service solr-server restart
-#    generate solr conf
+???{in container}hdfs dfs -mkdir /solr
+???{in container}sudo -u hdfs hadoop fs -chown solr /solr
+???{in container}service solr-server restart
+#    create temp solr config dir
 {in container}solrctl instancedir --generate $HOME/solr_configs
-
-#     copy setting and jar files to solr
-{in localhost}mkdir -p /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank/lib
-{in localhost}cp /home/hsiehpinghan/.m2/repository/com/hankcs/hanlp/portable-1.3.1/hanlp-portable-1.3.1.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank/lib
-{in localhost}cp /home/hsiehpinghan/git/assistant/hanlp-assistant/target/hanlp-assistant-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank/lib
+#    set solr configuration
 {in localhost}mv /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/solrconfig.xml /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/solrconfig.xml_original
 {in localhost}cp /home/hsiehpinghan/git/connet/apache-nutch-2.3.1/conf/thank-cloudera-solrconfig.xml /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/solrconfig.xml
 {in localhost}mv /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/schema.xml /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/schema.xml_original
 {in localhost}cp /home/hsiehpinghan/git/connet/apache-nutch-2.3.1/conf/thank-cloudera-schema.xml /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/schema.xml
-
+#    add solr jar
+{in localhost}mkdir -p /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+#    solr-assistant
+{in localhost}cp /home/hsiehpinghan/git/assistant/solr-assistant/target/solr-assistant-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+{in localhost}cp /home/hsiehpinghan/git/assistant/solr-assistant/src/main/lib/jts-1.13.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/webapps/solr/WEB-INF/lib
+#    ansj_seg-assistant
+{in localhost}cp /home/hsiehpinghan/git/assistant/ansj_seg-assistant/target/ansj_seg-assistant-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+{in localhost}cp /home/hsiehpinghan/.m2/repository/org/ansj/ansj_seg/5.0.4/ansj_seg-5.0.4.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+{in localhost}cp /home/hsiehpinghan/.m2/repository/org/nlpcn/nlp-lang/1.7.1/nlp-lang-1.7.1.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+{in localhost}mkdir -p /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/webapps/solr/WEB-INF/classes
+{in localhost}cp -r /home/hsiehpinghan/git/assistant/ansj_seg-assistant/src/main/resources/* /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/webapps/solr/WEB-INF/classes
+#    hanlp-assistant
+{in localhost}cp /home/hsiehpinghan/git/assistant/hanlp-assistant/target/hanlp-assistant-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+{in localhost}cp /home/hsiehpinghan/.m2/repository/com/hankcs/hanlp/portable-1.3.1/hanlp-portable-1.3.1.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+#    jieba-analysis
+{in localhost}cp /home/hsiehpinghan/.m2/repository/com/huaban/jieba-analysis/1.0.0/jieba-analysis-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
+{in localhost}cp /home/hsiehpinghan/git/assistant/jieba-analysis-assistant/target/jieba-analysis-assistant-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/contrib/thank
 #    uploads the content of the entire instance directory to ZooKeeper
-{in container}solrctl instancedir --create collection1 $HOME/solr_configs
+{in container}solrctl instancedir --create connet $HOME/solr_configs
 #    show solr instance
 {in container}solrctl instancedir --list 
 #    create solr collection
-{in container}solrctl collection --create collection1 -s <<numOfShards>>
+{in container}solrctl collection --create connet -s 1 -c connet
 
-
+# start and stop solr
+{in container}service solr-server restart
