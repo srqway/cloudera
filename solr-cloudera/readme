@@ -42,7 +42,7 @@
 {in localhost}cp /home/hsiehpinghan/.m2/repository/com/huaban/jieba-analysis/1.0.0/jieba-analysis-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/webapps/solr/WEB-INF/lib
 {in localhost}cp /home/hsiehpinghan/git/assistant/jieba-analysis-assistant/target/jieba-analysis-assistant-1.0.0.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/webapps/solr/WEB-INF/lib
 
-#    add dependencies lib
+#    (??? not work ???)add dependencies lib
 {in container}cp /usr/jars/solr-langid-4.10.3-cdh5.7.0.jar /usr/lib/solr/webapps/solr/WEB-INF/lib
 {in localhost}cp /home/hsiehpinghan/git/cloudera/solr-cloudera/jar/langdetect-1.1-20120112.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/webapps/solr/WEB-INF/lib
 {in localhost}cp /home/hsiehpinghan/git/cloudera/solr-cloudera/jar/jsonic-1.2.7.jar /var/lib/docker/aufs/mnt/<<container code>>/usr/lib/solr/webapps/solr/WEB-INF/lib
