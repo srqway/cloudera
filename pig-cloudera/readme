@@ -1,0 +1,21 @@
+# run pig
+<<local mode>>
+    pig -x local [file]
+    java -cp pig.jar org.apache.pig.Main -x local [file]
+<<mapreduce mode>>
+    pig -x mapreduce [file]
+    java -cp pig.jar org.apache.pig.Main -x mapreduce [file]
+    pig hdfs://localhost:9020/pig.pig
+    
+# Input/Output
+a = LOAD '/etc/passwd' USING PigStorage(':');
+b = FOREACH a GENERATE $0 AS id;
+STORE b INTO '/tmp/result';
+DUMP b;
+
+a = LOAD '/home/thank/Documents/workspace-sts/pig-cloudera/data/file.csv' USING PigStorage(',') AS (chararray_0:chararray, int_0:int, float_0:float);
+DUMP a;
+
+
+
+
