@@ -1,0 +1,5 @@
+a = LOAD '/home/hsiehpinghan/git/cloudera/pig-cloudera/data/file.json' USING JsonLoader('
+  recipe:chararray, 
+  ingredients: {(name:chararray)}, 
+  inventor: (name:chararray, age:int)
+');
