@@ -1,0 +1,51 @@
+# create mysql data
+mysql -u root -p <cludera>
+
+CREATE DATABASE test_database;
+
+USE test_database;
+CREATE TABLE test_source_table(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+test_varchar VARCHAR(64) NOT NULL,
+test_decimal DECIMAL(10,2),
+test_date DATE);
+
+INSERT INTO test_source_table VALUES(NULL, 'test_varchar_0', 0, '2010-01-01');
+INSERT INTO test_source_table VALUES(NULL, 'test_varchar_1', 1, '2011-01-01');
+INSERT INTO test_source_table VALUES(NULL, 'test_varchar_2', 2, '2012-01-01');
+
+USE test_database;
+CREATE TABLE test_target_table(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+test_varchar VARCHAR(64) NOT NULL,
+test_decimal DECIMAL(10,2),
+test_date DATE);
+
+exit;
+
+# export mysql data to hdfs
+sqoop import --connect jdbc:mysql://localhost/test_database --username root --password cloudera --table test_source_table --target-dir /tmp/sqoop_test
+hdfs dfs -cat /tmp/sqoop_test/part-m-*
+
+# export mysql data to hdfs as sequence file
+sqoop import --connect jdbc:mysql://localhost/test_database --username root --password cloudera --table test_source_table --target-dir /tmp/sqoop_sequence_test --class-name SequenceTest --bindir . --as-sequencefile
+hdfs dfs -cat /tmp/sqoop_sequence_test/part-m-*
+
+# export mysql data to hive
+sqoop import --connect jdbc:mysql://localhost/test_database --username root --password cloudera --table test_source_table --hive-import
+hive -e "select * from test_source_table"
+
+# import hdfs data to mysql
+sqoop export --connect jdbc:mysql://localhost/test_database --username root --password cloudera --table test_target_table --export-dir /tmp/sqoop_test 
+mysql -u root -p <cludera>
+USE test_database;
+select * from test_target_table;
+
+# import hdfs data to mysql with seqeunce file
+sqoop export --connect jdbc:mysql://localhost/test_database --username root --password cloudera --table test_target_table --export-dir /tmp/sqoop_sequence_test --class-name SequenceTest --jar-file SequenceTest.jar
+mysql -u root -p <cludera>
+USE test_database;
+select * from test_target_table;
+
+# import hive data to mysql
+sqoop export --connect jdbc:mysql://localhost/test_database --username root --password cloudera --table test_target_table --hcatalog-table test_source_table
+USE test_database;
+select * from test_target_table;
