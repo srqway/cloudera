@@ -43,45 +43,56 @@ tier1.channels.channel1.capacity = 100
 mkdir -p /tmp/flume/morphlineSolrSinkTest
 chmod -R 777 /tmp/flume/
 
+
+solrctl --zk 192.168.1.200:2181/solr instancedir --generate /tmp/solr_configs
+solrctl --zk 192.168.1.200:2181/solr instancedir --create morphlineSolrSinkCollection /tmp/solr_configs
+solrctl --zk 192.168.1.200:2181/solr instancedir --list 
+solrctl --zk 192.168.1.200:2181/solr collection --create morphlineSolrSinkCollection -s 1 -c morphlineSolrSinkCollection
+
+
 vi /tmp/flume/morphlineSolrSinkTest/data_0.json
 {"docId":10,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
 
 
 vi /tmp/morphlineSolrSinkTest
+SOLR_LOCATOR : {
+  collection : morphlineSolrSinkCollection
+  zkHost : "node0:2181/solr"
+}
 morphlines : [
   {
-    id : morphline1
-    importCommands : ["org.kitesdk.**"]
-    
+    id : morphline_0
+    importCommands : ["org.kitesdk.**", "org.apache.solr.**"]
     commands : [                    
       { 
         readJson {}
       } 
       { extractJsonPaths {
-          flatten : false
+          flatten : true
           paths : { 
-            /docId : /docId
-            /links : /links
-            /links/backward : "/links/backward"
-            /links/forward : "/links/forward"
-            "/links/forward/[]" : "/links/forward/[]"
-            "/links/forward[]" : "/links/forward[]"
-            "/links/bool" : "/links/bool"
-            "/links/short" : "/links/short"
-            "/links/int" : "/links/int"
-            "/links/long" : "/links/long"
-            "/links/double" : "/links/double"  
-            /name : /name
-            "/name/[]/language/[]/code" : "/name/[]/language/[]/code"
-            "/name[]/language[]/code" : "/name[]/language[]/code"
-            "/name/[]/language/[]/country" : "/name/[]/language/[]/country"
-            "/name[]/language[]/country" : "/name[]/language[]/country"
-            "/name/[]/url" : "/name/[]/url"
-            "/name[]/url" : "/name[]/url"
+            "id" : "/docId"
+            "bool" : "/links/bool"
+            "short" : "/links/short"
+            "int" : "/links/int"
+            "long" : "/links/long"
+            "double" : "/links/double"
+            "name_languages_codes" : "/name[]/language[]/code"
+            "name_language_countries" : "/name[]/language[]/country"
+            "name_urls" : "/name[]/url"
           } 
         }
       }
-      { logInfo { format : "output record: {}", args : ["@{}"] } }    
+      {
+        sanitizeUnknownSolrFields {
+          solrLocator : ${SOLR_LOCATOR}
+        }
+      }
+      { logInfo { format : "output record: {}", args : ["@{}"] } }
+      {
+        loadSolr {
+          solrLocator : ${SOLR_LOCATOR}
+        }
+      }  
     ]
   }
 ]

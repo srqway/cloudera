@@ -21,6 +21,18 @@
 # start and stop solr
 {in container}service solr-server restart
 
+# create distributed solr core
+#    create temp solr config dir
+solrctl --zk 192.168.1.200:2181/solr instancedir --generate $HOME/solr_configs
+#    modify schema.xml
+vi $HOME/solr_configs/conf/schema.xml
+#    uploads the content of the entire instance directory to ZooKeeper
+solrctl --zk 192.168.1.200:2181/solr instancedir --create connet $HOME/solr_configs
+#    show solr instance
+solrctl --zk 192.168.1.200:2181/solr instancedir --list 
+#    create solr collection
+solrctl --zk 192.168.1.200:2181/solr collection --create connet -s 1 -c connet
+
 #    set solr configuration
 {in localhost}mv /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/solrconfig.xml /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/solrconfig.xml_original
 {in localhost}cp /home/hsiehpinghan/git/connet/apache-nutch-2.3.1/conf/thank-cloudera-solrconfig.xml /var/lib/docker/aufs/mnt/<<container code>>/root/solr_configs/conf/solrconfig.xml
@@ -51,4 +63,7 @@
 {in container}solrctl instancedir --update connet $HOME/solr_configs
 {in container}service solr-server restart
 
+# delete distributed solr core
+solrctl --zk 192.168.1.200:2181/solr collection --delete connet
+solrctl --zk 192.168.1.200:2181/solr instancedir --delete connet
 
