@@ -51,7 +51,9 @@ solrctl --zk 192.168.1.200:2181/solr collection --create morphlineSolrSinkCollec
 
 
 vi /tmp/flume/morphlineSolrSinkTest/data_0.json
-{"docId":10,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+{"docId":0,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+{"docId":1,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+{"docId":2,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
 
 
 vi /tmp/morphlineSolrSinkTest
@@ -71,14 +73,14 @@ morphlines : [
           flatten : true
           paths : { 
             "id" : "/docId"
-            "bool" : "/links/bool"
-            "short" : "/links/short"
-            "int" : "/links/int"
-            "long" : "/links/long"
-            "double" : "/links/double"
-            "name_languages_codes" : "/name[]/language[]/code"
-            "name_language_countries" : "/name[]/language[]/country"
-            "name_urls" : "/name[]/url"
+            "bool_b" : "/links/bool"
+            "short_i" : "/links/short"
+            "int_i" : "/links/int"
+            "long_l" : "/links/long"
+            "double_d" : "/links/double"
+            "name_languages_codes_ss" : "/name[]/language[]/code"
+            "name_language_countries_ss" : "/name[]/language[]/country"
+            "name_urls" : "/name[]/url_ss"
           } 
         }
       }
