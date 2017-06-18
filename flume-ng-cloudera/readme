@@ -43,6 +43,54 @@ tier1.channels.channel1.capacity = 100
 mkdir -p /tmp/flume/morphlineSolrSinkTest
 chmod -R 777 /tmp/flume/
 
+vi /tmp/flume/morphlineSolrSinkTest/data_0.json
+{"docId":10,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+
+
+vi /tmp/morphlineSolrSinkTest
+morphlines : [
+  {
+    id : morphline1
+    importCommands : ["org.kitesdk.**"]
+    
+    commands : [                    
+      { 
+        readJson {}
+      } 
+      { extractJsonPaths {
+          flatten : false
+          paths : { 
+            "/price/[]" : "/price/[]"
+            /price : /price
+            
+            /docId : /docId
+            /links : /links
+            /links/backward : "/links/backward"
+            /links/forward : "/links/forward"
+            "/links/forward/[]" : "/links/forward/[]"
+            "/links/forward[]" : "/links/forward[]"
+            /name : /name
+            "/name/[]/language/[]/code" : "/name/[]/language/[]/code"
+            "/name[]/language[]/code" : "/name[]/language[]/code"
+            "/name/[]/language/[]/country" : "/name/[]/language/[]/country"
+            "/name[]/language[]/country" : "/name[]/language[]/country"
+            
+            /mapField/foo/label : /mapField/foo/label/
+
+            "/links/bool" : "/links/bool"
+            "/links/short" : "/links/short"
+            "/links/int" : "/links/int"
+            "/links/long" : "/links/long"
+            "/links/double" : "/links/double"  
+          } 
+        }
+      }
+      { logInfo { format : "output record: {}", args : ["@{}"] } }    
+    ]
+  }
+]
+
+
 tier1.sources  = source1
 tier1.channels = channel1
 tier1.sinks    = sink1
@@ -57,18 +105,3 @@ tier1.sinks.sink1.morphlineFile    = /tmp/morphlineSolrSinkTest
 
 tier1.channels.channel1.capacity = 100
 
-vi /tmp/morphlineSolrSinkTest
-morphlines : [
-  {
-    id : morphline1
-    importCommands : ["org.kitesdk.**"]
-    
-    commands : [                    
-      { 
-        readJson {}
-      } 
-#     { extractJsonPaths {} }
-      { logInfo { format : "output record: {}", args : ["@{}"] } }    
-    ]
-  }
-]
