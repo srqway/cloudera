@@ -80,7 +80,7 @@ morphlines : [
             "double_d" : "/links/double"
             "name_languages_codes_ss" : "/name[]/language[]/code"
             "name_language_countries_ss" : "/name[]/language[]/country"
-            "name_urls" : "/name[]/url_ss"
+            "name_urls_ss" : "/name[]/url"
           } 
         }
       }
