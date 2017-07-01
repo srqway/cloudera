@@ -4,58 +4,56 @@ telnet 127.0.0.1 9999
 cat /var/log/flume-ng/flume-cmf-flume-AGENT-node0.log
 
 # netcat to hdfs
-tier1.sources  = source1
-tier1.channels = channel1
-tier1.sinks    = sink1
-
-tier1.sources.source1.type     = netcat
-tier1.sources.source1.bind     = 127.0.0.1
-tier1.sources.source1.port     = 9999
+tier1.sources = source1
+tier1.sources.source1.type = netcat
+tier1.sources.source1.bind = 127.0.0.1
+tier1.sources.source1.port = 9999
 tier1.sources.source1.channels = channel1
-tier1.channels.channel1.type   = memory
-tier1.sinks.sink1.type         = hdfs
-tier1.sinks.sink1.fileType     = DataStream
-tier1.sinks.sink1.channel      = channel1
-tier1.sinks.sink1.hdfs.path    = hdfs://node0:8020/tmp
-
+tier1.channels = channel1
+tier1.channels.channel1.type = memory
 tier1.channels.channel1.capacity = 100
+tier1.sinks = sink1
+tier1.sinks.sink1.type = hdfs
+tier1.sinks.sink1.fileType = DataStream
+tier1.sinks.sink1.channel = channel1
+tier1.sinks.sink1.hdfs.path = hdfs://node0:8020/tmp
+
 
 # spooldir to hdfs
 mkdir -p /tmp/flume/spooldirTest
 chmod -R 777 /tmp/flume/
 
-tier1.sources  = source1
-tier1.channels = channel1
-tier1.sinks    = sink1
-
-tier1.sources.source1.type     = spooldir
+tier1.sources = source1
+tier1.sources.source1.type = spooldir
 tier1.sources.source1.spoolDir = /tmp/flume/spooldirTest
 tier1.sources.source1.channels = channel1
-tier1.sources.source1.deserializer.maxLineLength = 10240
-tier1.channels.channel1.type   = memory
-tier1.sinks.sink1.type         = hdfs
-tier1.sinks.sink1.fileType     = DataStream
-tier1.sinks.sink1.channel      = channel1
-tier1.sinks.sink1.hdfs.path    = hdfs://node0:8020/tmp
-
+tier1.channels = channel1
+tier1.channels.channel1.type = memory
 tier1.channels.channel1.capacity = 100
+tier1.sinks = sink1
+tier1.sinks.sink1.type = hdfs
+tier1.sinks.sink1.fileType = DataStream
+tier1.sinks.sink1.channel = channel1
+tier1.sinks.sink1.hdfs.path = hdfs://node0:8020/tmp
+
 
 # spooldir to org.apache.flume.sink.solr.morphline.MorphlineSolrSink
 mkdir -p /tmp/flume/morphlineSolrSinkTest
-chmod -R 777 /tmp/flume/
-
+mkdir -p /tmp/flume/checkpointDir
+mkdir -p /tmp/flume/dataDir
+chown -R flume:flume /tmp/flume/
 
 solrctl --zk 192.168.1.200:2181/solr instancedir --generate /tmp/solr_configs
 solrctl --zk 192.168.1.200:2181/solr instancedir --create morphlineSolrSinkCollection /tmp/solr_configs
 solrctl --zk 192.168.1.200:2181/solr instancedir --list 
 solrctl --zk 192.168.1.200:2181/solr collection --create morphlineSolrSinkCollection -s 1 -c morphlineSolrSinkCollection
 
-
 vi /tmp/flume/morphlineSolrSinkTest/data_0.json
-{"docId":0,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
-{"docId":1,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
-{"docId":2,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+{"docId":0,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"2000-01-01T01:01:01.111Z"},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+{"docId":1,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"2001-01-01T01:01:01"},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+{"docId":2,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"2002-01-01"},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
 
+chown flume:flume /tmp/flume/morphlineSolrSinkTest/data_0.json
 
 vi /tmp/morphlineSolrSinkTest
 SOLR_LOCATOR : {
@@ -79,10 +77,20 @@ morphlines : [
             "int_i" : "/links/int"
             "long_l" : "/links/long"
             "double_d" : "/links/double"
+            "date_dt" : "/links/date"
             "name_languages_codes_ss" : "/name[]/language[]/code"
             "name_language_countries_ss" : "/name[]/language[]/country"
             "name_urls_ss" : "/name[]/url"
           } 
+        }
+      }
+      {
+        convertTimestamp {
+          field : date_dt
+          inputFormats : ["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd"]
+          inputTimezone : Asia/Taipei
+          outputFormat : "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+          outputTimezone : UTC
         }
       }
       {
@@ -100,18 +108,17 @@ morphlines : [
   }
 ]
 
-
-tier1.sources  = source1
-tier1.channels = channel1
-tier1.sinks    = sink1
-
-tier1.sources.source1.type     = spooldir
+tier1.sources = source1
+tier1.sources.source1.type = spooldir
 tier1.sources.source1.spoolDir = /tmp/flume/morphlineSolrSinkTest
 tier1.sources.source1.channels = channel1
-tier1.channels.channel1.type   = memory
-tier1.sinks.sink1.type         = org.apache.flume.sink.solr.morphline.MorphlineSolrSink
-tier1.sinks.sink1.channel      = channel1
-tier1.sinks.sink1.morphlineFile    = /tmp/morphlineSolrSinkTest
-
-tier1.channels.channel1.capacity = 100
+tier1.sources.source1.deserializer.maxLineLength = 10240
+tier1.channels = channel1
+tier1.channels.channel1.type = file
+tier1.channels.channel1.checkpointDir = /tmp/flume/checkpointDir
+tier1.channels.channel1.dataDirs = /tmp/flume/dataDirs
+tier1.sinks = sink1
+tier1.sinks.sink1.type = org.apache.flume.sink.solr.morphline.MorphlineSolrSink
+tier1.sinks.sink1.channel = channel1
+tier1.sinks.sink1.morphlineFile = /tmp/morphlineSolrSinkTest
 
