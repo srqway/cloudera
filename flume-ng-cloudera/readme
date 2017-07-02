@@ -38,24 +38,22 @@ tier1.sinks.sink1.hdfs.path = hdfs://node0:8020/tmp
 
 
 # spooldir to org.apache.flume.sink.solr.morphline.MorphlineSolrSink
-mkdir -p /tmp/flume/morphlineSolrSinkTest
-mkdir -p /tmp/flume/checkpointDir
-mkdir -p /tmp/flume/dataDir
-chown -R flume:flume /tmp/flume/
+vi /etc/passwd
+flume:x:495:491:Flume:/var/lib/flume-ng:/bin/bash
+su flume
+mkdir -p /tmp/flume/MorphlineSolrSink/spooldir
 
 solrctl --zk 192.168.1.200:2181/solr instancedir --generate /tmp/solr_configs
 solrctl --zk 192.168.1.200:2181/solr instancedir --create morphlineSolrSinkCollection /tmp/solr_configs
 solrctl --zk 192.168.1.200:2181/solr instancedir --list 
 solrctl --zk 192.168.1.200:2181/solr collection --create morphlineSolrSinkCollection -s 1 -c morphlineSolrSinkCollection
 
-vi /tmp/flume/morphlineSolrSinkTest/data_0.json
-{"docId":0,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"2000-01-01T01:01:01.111Z"},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
-{"docId":1,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"2001-01-01T01:01:01"},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
-{"docId":2,"links":{"backward":[],"forward":[20,40,60,true,false,32767,2147483647,9223372036854775807,1.23,1.7976931348623157E308],"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"2002-01-01"},"name":[{"language":[{"code":"en-us","country":"us"},{"code":"en","country":null}],"url":"http:\/\/A"},{"language":[],"url":"http:\/\/B"},{"language":[{"code":"en-gb","country":"gb"}],"url":null}]}
+vi /tmp/flume/MorphlineSolrSink/spooldir/data_0.json
+{"docId":0,"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"1001-01-01T01:01:01.001Z","date_array":["1101-01-01T01:01:01.001Z","1201-01-01T01:01:01.001Z","1301-01-01T01:01:01.001Z"],"text":"中文測試","text_array":["中文測試A0","中文測試B0","中文測試C0"],"object_array":[{"url":"http:\/\/A"},{"url":"http:\/\/B"},{"url":"http:\/\/C"}]}
+{"docId":1,"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"2001-01-01T01:01:01","date_array":["1101-01-01T01:01:01","1201-01-01T01:01:01","1301-01-01T01:01:01"],"text":"中文測試","text_array":["中文測試A1","中文測試B1","中文測試C1"],"object_array":[{"url":"http:\/\/A"},{"url":"http:\/\/B"},{"url":"http:\/\/C"}]}
+{"docId":2,"bool":true,"short":32767,"int":2147483647,"long":9223372036854775807,"double":1.7976931348623157E308,"date":"1001-01-01","date_array":["1101-01-01","1201-01-01","1301-01-01"],"text":"中文測試","text_array":["中文測試A2","中文測試B2","中文測試C2"],"object_array":[{"url":"http:\/\/A"},{"url":"http:\/\/B"},{"url":"http:\/\/C"}]}
 
-chown flume:flume /tmp/flume/morphlineSolrSinkTest/data_0.json
-
-vi /tmp/morphlineSolrSinkTest
+vi /tmp/flume/MorphlineSolrSink/morphlineSolrSinkMorphlineFile
 SOLR_LOCATOR : {
   collection : morphlineSolrSinkCollection
   zkHost : "node0:2181/solr"
@@ -72,21 +70,31 @@ morphlines : [
           flatten : true
           paths : { 
             "id" : "/docId"
-            "bool_b" : "/links/bool"
-            "short_i" : "/links/short"
-            "int_i" : "/links/int"
-            "long_l" : "/links/long"
-            "double_d" : "/links/double"
-            "date_dt" : "/links/date"
-            "name_languages_codes_ss" : "/name[]/language[]/code"
-            "name_language_countries_ss" : "/name[]/language[]/country"
-            "name_urls_ss" : "/name[]/url"
+            "bool_b" : "/bool"
+            "short_i" : "/short"
+            "int_i" : "/int"
+            "long_l" : "/long"
+            "double_d" : "/double"
+            "date_dt" : "/date"
+            "date_dts" : "/date_array"
+            "text_t" : "/text"
+            "text_txt" : "/text_array"
+            "urls_ss" : "/object_array[]/url"
           } 
         }
       }
       {
         convertTimestamp {
           field : date_dt
+          inputFormats : ["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd"]
+          inputTimezone : Asia/Taipei
+          outputFormat : "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+          outputTimezone : UTC
+        }
+      }
+      {
+        convertTimestamp {
+          field : date_dts
           inputFormats : ["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd"]
           inputTimezone : Asia/Taipei
           outputFormat : "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -110,15 +118,13 @@ morphlines : [
 
 tier1.sources = source1
 tier1.sources.source1.type = spooldir
-tier1.sources.source1.spoolDir = /tmp/flume/morphlineSolrSinkTest
+tier1.sources.source1.spoolDir = /tmp/flume/MorphlineSolrSink/spooldir
 tier1.sources.source1.channels = channel1
-tier1.sources.source1.deserializer.maxLineLength = 10240
+tier1.sources.source1.deserializer.maxLineLength = 2147483647
 tier1.channels = channel1
 tier1.channels.channel1.type = file
-tier1.channels.channel1.checkpointDir = /tmp/flume/checkpointDir
-tier1.channels.channel1.dataDirs = /tmp/flume/dataDirs
 tier1.sinks = sink1
 tier1.sinks.sink1.type = org.apache.flume.sink.solr.morphline.MorphlineSolrSink
 tier1.sinks.sink1.channel = channel1
-tier1.sinks.sink1.morphlineFile = /tmp/morphlineSolrSinkTest
+tier1.sinks.sink1.morphlineFile = /tmp/flume/MorphlineSolrSink/morphlineSolrSinkMorphlineFile
 
