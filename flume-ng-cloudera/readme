@@ -56,7 +56,7 @@ vi /tmp/flume/MorphlineSolrSink/spooldir/data_0.json
 vi /tmp/flume/MorphlineSolrSink/morphlineSolrSinkMorphlineFile
 SOLR_LOCATOR : {
   collection : morphlineSolrSinkCollection
-  zkHost : "node0:2181/solr"
+  zkHost : "node0:2181,node1:2181,node2:2181/solr"
 }
 morphlines : [
   {
