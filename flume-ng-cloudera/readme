@@ -128,3 +128,27 @@ tier1.sinks.sink1.type = org.apache.flume.sink.solr.morphline.MorphlineSolrSink
 tier1.sinks.sink1.channel = channel1
 tier1.sinks.sink1.morphlineFile = /tmp/flume/MorphlineSolrSink/morphlineSolrSinkMorphlineFile
 
+
+# spooldir to org.apache.flume.sink.hbase.HBaseSink
+mkdir -p /tmp/flume/spooldir_hbase
+chmod -R 777 /tmp/flume/
+
+tier1.sources = source1
+tier1.sources.source1.type = spooldir
+tier1.sources.source1.spoolDir = /tmp/flume/spooldir_hbase
+tier1.sources.source1.channels = channel1
+tier1.sources.source1.deserializer.maxLineLength = 2147483647
+tier1.channels = channel1
+tier1.channels.channel1.type = file
+tier1.sinks = sink1
+tier1.sinks.sink1.type = org.apache.flume.sink.hbase.HBaseSink
+tier1.sinks.sink1.channel = channel1
+tier1.sinks.sink1.table = flume_ng_hbase_table
+tier1.sinks.sink1.columnFamily = flume_ng_hbase_columnFamily
+# tier1.sinks.sink1.zookeeperQuorum = node0,node1,node2    (in cloudera DON'T set this)
+# tier1.sinks.sink1.znodeParent = /hbase   (in cloudera DON'T set this)
+tier1.sinks.sink1.batchSize = 100
+tier1.sinks.sink1.coalesceIncrements = false
+tier1.sinks.sink1.serializer = org.apache.flume.sink.hbase.SimpleHbaseEventSerializer
+
+
