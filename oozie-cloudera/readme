@@ -1,12 +1,15 @@
-# oozie web page
-http://172.17.0.1:11000
+# enable oozie web page
+wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip /tmp
+unzip /tmp/ext-2.2.zip -d /opt/cloudera/parcels/CDH/lib/oozie/libext/
+chown oozie:oozie -R /opt/cloudera/parcels/CDH/lib/oozie/libext/ext-2.2
+http://node0:11000
 
 # put example to hdfs
 sudo su -
-hdfs dfs -put /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples hdfs://172.17.0.1:8020/user/root/examples
+hdfs dfs -put /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples hdfs://node0:8020/user/root/examples
 
 # run oozie
 #	shell
-oozie job -oozie http://172.17.0.1:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/shell/job.properties -run
+oozie job -oozie http://node0:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/shell/job.properties -run
 #	hive
-oozie job -oozie http://172.17.0.3:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/hive/job.properties -run
+oozie job -oozie http://node0:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/hive/job.properties -run
