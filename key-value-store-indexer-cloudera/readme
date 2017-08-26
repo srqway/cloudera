@@ -174,4 +174,7 @@ morphlines : [
 6. run hbase-indexer
     hadoop --config /etc/hadoop/conf jar /opt/cloudera/parcels/CDH/lib/hbase-solr/tools/hbase-indexer-mr-job.jar --conf /etc/hbase/conf/hbase-site.xml --hbase-indexer-file /tmp/keyValueStoreIndexer/mapper/morphline-hbase-mapper_batch.xml --zk-host node0:2181,node1:2181,node2:2181/solr --collection keyValueStoreIndexerBatchCollection --go-live 
 
+7. problem and solution
+	a. problem : jobs get stuck in Accepted state
+	   solution : edit yarn configuration, and give "yarn.nodemanager.resource.memory-mb" more momory.
 
