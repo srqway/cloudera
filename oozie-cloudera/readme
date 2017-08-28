@@ -5,11 +5,16 @@ chown oozie:oozie -R /opt/cloudera/parcels/CDH/lib/oozie/libext/ext-2.2
 http://node0:11000
 
 # put example to hdfs
-sudo su -
-hdfs dfs -put /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples hdfs://node0:8020/user/root/examples
+cp -r /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples /tmp/examples
+su -
+su oozie
+hdfs dfs -mkdir hdfs://node0:8020/user/oozie/examples
+hdfs dfs -put /tmp/examples hdfs://node0:8020/user/oozie/
 
 # run oozie
 #	shell
-oozie job -oozie http://node0:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/shell/job.properties -run
+su oozie
+oozie job -oozie http://node0:11000/oozie -config /tmp/examples/apps/shell/job.properties -run
+
 #	hive
-oozie job -oozie http://node0:11000/oozie -config /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples/apps/hive/job.properties -run
+oozie job -oozie http://node0:11000/oozie -config /tmp/examples/apps/hive/job.properties -run
