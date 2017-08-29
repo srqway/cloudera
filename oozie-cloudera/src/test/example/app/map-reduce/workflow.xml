@@ -1,0 +1,39 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="map-reduce-workflow">
+	<start to="map-reduce-action" />
+	<action name="map-reduce-action">
+		<map-reduce>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<prepare>
+				<delete path="${nameNode}/user/oozie/output-data/${outputDir}" />
+			</prepare>
+			<!-- reference : org.apache.hadoop.mapred.JobConf -->
+			<configuration>
+				<property>
+					<name>mapred.mapper.class</name>
+					<value>idv.hsiehpinghan.ooziecloudera.mapper.MapReduceMapper
+					</value>
+				</property>
+				<property>
+					<name>mapred.reducer.class</name>
+					<value>idv.hsiehpinghan.ooziecloudera.reducer.MapReduceReducer
+					</value>
+				</property>
+				<property>
+					<name>mapred.input.dir</name>
+					<value>/user/oozie/input-data/${inputDir}</value>
+				</property>
+				<property>
+					<name>mapred.output.dir</name>
+					<value>/user/oozie/output-data/${outputDir}</value>
+				</property>
+			</configuration>
+		</map-reduce>
+		<ok to="end" />
+		<error to="fail" />
+	</action>
+	<kill name="fail">
+		<message>Map/Reduce failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+	</kill>
+	<end name="end" />
+</workflow-app>

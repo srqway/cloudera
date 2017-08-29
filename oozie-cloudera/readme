@@ -1,20 +1,54 @@
+# download oozie-examples from http://repository.liveramp.com/artifactory/cloudera-repos/org/apache/oozie/oozie-examples/
+
 # enable oozie web page
 wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip /tmp
 unzip /tmp/ext-2.2.zip -d /opt/cloudera/parcels/CDH/lib/oozie/libext/
 chown oozie:oozie -R /opt/cloudera/parcels/CDH/lib/oozie/libext/ext-2.2
 http://node0:11000
 
-# put example to hdfs
-cp -r /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples /tmp/examples
+# list instaled lib
+export OOZIE_URL=http://node0:11000/oozie
+oozie admin -shareliblist
+
+# query 
+oozie job -oozie http://node0:11000/oozie -log <<job-id>>
+oozie job -oozie http://node0:11000/oozie -info <<job-id>>
+
+# put app to hdfs
 su -
+cp /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/example/app/map-reduce/workflow.xml /tmp/workflow.xml
+cp /home/hsiehpinghan/.m2/repository/idv/hsiehpinghan/oozie-cloudera/1.0.0/oozie-cloudera-1.0.0-jar-with-dependencies.jar /tmp/oozie-cloudera-1.0.0-jar-with-dependencies.jar
+cp /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/example/input-data/map-reduce/text /tmp/text
+cp /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/example/app/map-reduce/job.properties /tmp/job.properties
 su oozie
-hdfs dfs -mkdir hdfs://node0:8020/user/oozie/examples
-hdfs dfs -put /tmp/examples hdfs://node0:8020/user/oozie/
+hdfs dfs -mkdir -p hdfs://node0:8020/user/oozie/app/map-reduce/lib
+hdfs dfs -put -f /tmp/workflow.xml hdfs://node0:8020/user/oozie/app/map-reduce
+hdfs dfs -put -f /tmp/oozie-cloudera-1.0.0-jar-with-dependencies.jar hdfs://node0:8020/user/oozie/app/map-reduce/lib
+hdfs dfs -mkdir -p hdfs://node0:8020/user/oozie/input-data/map-reduce
+hdfs dfs -put -f /tmp/text hdfs://node0:8020/user/oozie/input-data/map-reduce
+hdfs dfs -mkdir -p hdfs://node0:8020/user/oozie/output-data/map-reduce
+oozie job -oozie http://node0:11000/oozie -config /tmp/job.properties -run
+hdfs dfs -ls hdfs://node0:8020/user/oozie/output-data/map-reduce
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+# put example to hdfs
+su -
+cp -r /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/examples /tmp/examples
+su oozie
+hdfs dfs -mkdir hdfs://node0:8020/user/oozie
+hdfs dfs -put -f /tmp/examples hdfs://node0:8020/user/oozie/
 
 # run oozie
 #	shell
 su oozie
 oozie job -oozie http://node0:11000/oozie -config /tmp/examples/apps/shell/job.properties -run
 
-#	hive
+# run hive
 oozie job -oozie http://node0:11000/oozie -config /tmp/examples/apps/hive/job.properties -run
+
+# run map-reduce
+oozie job -oozie http://node0:11000/oozie -config /tmp/examples/apps/map-reduce/job.properties -run

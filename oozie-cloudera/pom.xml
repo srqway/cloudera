@@ -37,7 +37,8 @@
 		<slf4j.version>1.7.10</slf4j.version>
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<oozie.version>4.1.0-cdh5.11.1</oozie.version>
+<!-- 		<oozie.version>4.1.0-cdh5.11.0</oozie.version> -->
+		<oozie-hadoop.version>2.6.0-cdh5.11.0.oozie-4.1.0-cdh5.11.0</oozie-hadoop.version>
 	</properties>
 
 	<dependencies>
@@ -77,19 +78,49 @@
 		</dependency>
 
 		<!-- oozie -->
-		<dependency>
-			<groupId>org.apache.oozie</groupId>
-			<artifactId>oozie-core</artifactId>
-			<version>${oozie.version}</version>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.oozie</groupId> -->
+<!-- 			<artifactId>oozie-core</artifactId> -->
+<!-- 			<version>${oozie.version}</version> -->
 <!-- 			<scope>provided</scope> -->
-		</dependency>
-		<dependency>
-			<groupId>org.apache.oozie</groupId>
-			<artifactId>oozie-client</artifactId>
-			<version>${oozie.version}</version>
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.oozie</groupId> -->
+<!-- 			<artifactId>oozie-client</artifactId> -->
+<!-- 			<version>${oozie.version}</version> -->
 <!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+        
+		<!-- oozie-hadoop -->
+		<dependency>
+		    <groupId>org.apache.oozie</groupId>
+		    <artifactId>oozie-hadoop</artifactId>
+		    <version>${oozie-hadoop.version}</version>
+		    <scope>provided</scope>
 		</dependency>
 
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
