@@ -14,7 +14,7 @@ oozie admin -shareliblist
 oozie job -oozie http://node0:11000/oozie -log <<job-id>>
 oozie job -oozie http://node0:11000/oozie -info <<job-id>>
 
-# put app to hdfs
+# test map-reduce
 su -
 cp /home/hsiehpinghan/git/cloudera/oozie-cloudera/src/test/example/app/map-reduce/workflow.xml /tmp/workflow.xml
 cp /home/hsiehpinghan/.m2/repository/idv/hsiehpinghan/oozie-cloudera/1.0.0/oozie-cloudera-1.0.0-jar-with-dependencies.jar /tmp/oozie-cloudera-1.0.0-jar-with-dependencies.jar
@@ -29,6 +29,21 @@ hdfs dfs -put -f /tmp/text hdfs://node0:8020/user/oozie/input-data/map-reduce
 hdfs dfs -mkdir -p hdfs://node0:8020/user/oozie/output-data/map-reduce
 oozie job -oozie http://node0:11000/oozie -config /tmp/job.properties -run
 hdfs dfs -ls hdfs://node0:8020/user/oozie/output-data/map-reduce
+
+# test java
+su -
+cp /home/thank/git/cloudera/oozie-cloudera/src/test/example/app/java/workflow.xml /tmp/workflow.xml
+cp /home/hsiehpinghan/.m2/repository/idv/hsiehpinghan/oozie-cloudera/1.0.0/oozie-cloudera-1.0.0-jar-with-dependencies.jar /tmp/oozie-cloudera-1.0.0-jar-with-dependencies.jar
+cp /home/thank/git/cloudera/oozie-cloudera/src/test/example/app/java/job.properties /tmp/job.properties
+su oozie
+hdfs dfs -mkdir -p hdfs://node0:8020/user/oozie/app/java/lib
+hdfs dfs -put -f /tmp/workflow.xml hdfs://node0:8020/user/oozie/app/java
+hdfs dfs -put -f /tmp/oozie-cloudera-1.0.0-jar-with-dependencies.jar hdfs://node0:8020/user/oozie/app/java/lib
+oozie job -oozie http://node0:11000/oozie -config /tmp/job.properties -run
+
+
+
+
 
 
 ------------------------------------------------------------------------------------------------
