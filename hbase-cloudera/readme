@@ -1,0 +1,3 @@
+# using hbase AggregationClient
+alter '<<table name>>', METHOD => 'table_att','coprocessor'=>'|org.apache.hadoop.hbase.coprocessor.AggregateImplementation||'
+
