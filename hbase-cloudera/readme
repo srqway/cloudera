@@ -5,7 +5,7 @@ alter '<<table name>>', METHOD => 'table_att','coprocessor'=>'|org.apache.hadoop
 hbase org.apache.hadoop.hbase.mapreduce.Driver export <<table name>> file:///<<directory path>>
 hbase org.apache.hadoop.hbase.mapreduce.Driver import <<table name>> file:///<<directory path>>
 
-# export & import hbase to local file
+# export & import hbase to hdfs
 hbase org.apache.hadoop.hbase.mapreduce.Driver export <<table name>> hdfs://namenode/<<directory path>>
 hbase org.apache.hadoop.hbase.mapreduce.Driver import <<table name>> hdfs://namenode/<<directory path>>
 
