@@ -151,4 +151,14 @@ tier1.sinks.sink1.batchSize = 100
 tier1.sinks.sink1.coalesceIncrements = false
 tier1.sinks.sink1.serializer = org.apache.flume.sink.hbase.SimpleHbaseEventSerializer
 
+# log4j to flume
+cd /tmp
+curl -O -J -L http://archive.cloudera.com/cdh5/cdh/5/flume-ng-1.6.0-cdh5.15.1.tar.gz
+tar xvfz flume-ng-1.6.0-cdh5.15.1.tar.gz -C /opt/
+mkdir /tmp/flume
+cp /home/hsiehpinghan/git/cloudera/flume-ng-cloudera/conf/flume-conf.properties /opt/apache-flume-1.6.0-cdh5.15.1-bin/conf/
+/opt/apache-flume-1.6.0-cdh5.15.1-bin/bin/flume-ng agent -c /opt/apache-flume-1.6.0-cdh5.15.1-bin/conf -f flume-conf.properties --name log4j -Dflume.root.logger=INFO,console
+
+
+
 
