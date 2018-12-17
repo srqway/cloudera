@@ -32,15 +32,15 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cloudera.version>1.6.0-cdh5.15.1</cloudera.version>
+		<flume.version>1.6.0-cdh5.15.1</flume.version>
 	</properties>
 
 	<dependencies>
-		<!-- cloudera -->
+		<!-- flume -->
 		<dependency>
 			<groupId>org.apache.flume.flume-ng-clients</groupId>
 			<artifactId>flume-ng-log4jappender</artifactId>
-			<version>${cloudera.version}</version>
+			<version>${flume.version}</version>
 		</dependency>
 		<!-- junit -->
 		<dependency>
