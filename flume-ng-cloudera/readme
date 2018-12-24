@@ -172,3 +172,16 @@ cp /home/hsiehpinghan/git/cloudera/flume-ng-cloudera/conf/flume-conf.properties 
 /opt/apache-flume-1.6.0-cdh5.15.1-bin/bin/flume-ng agent -c /opt/apache-flume-1.6.0-cdh5.15.1-bin/conf -f /opt/apache-flume-1.6.0-cdh5.15.1-bin/conf/flume-conf.properties --name kafka -Dflume.root.logger=INFO,console
 echo "hello~" >> /tmp/flume_kafka_source
 /opt/kafka_2.11-1.0.0/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic flume_topic --from-beginning
+
+# file to flume
+cd /tmp
+curl -O -J -L http://archive.cloudera.com/cdh5/cdh/5/flume-ng-1.6.0-cdh5.15.1.tar.gz
+tar xvfz flume-ng-1.6.0-cdh5.15.1.tar.gz -C /opt/
+mkdir /tmp/flume
+cp /home/hsiehpinghan/git/cloudera/flume-ng-cloudera/conf/flume-conf.properties /opt/apache-flume-1.6.0-cdh5.15.1-bin/conf/
+/opt/apache-flume-1.6.0-cdh5.15.1-bin/bin/flume-ng agent -c /opt/apache-flume-1.6.0-cdh5.15.1-bin/conf -f /opt/apache-flume-1.6.0-cdh5.15.1-bin/conf/flume-conf.properties --name file -Dflume.root.logger=INFO,console
+echo hello >> /tmp/file
+vi /tmp/flume/???
+
+
+
