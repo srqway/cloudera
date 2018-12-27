@@ -1,3 +1,12 @@
+# start solr
+cp -R /opt/solr-4.10.3-cdh5.15.1/example/solr/collection1 /opt/solr-4.10.3-cdh5.15.1/example/solr/my_collection
+rm -rf /opt/solr-4.10.3-cdh5.15.1/example/solr/collection1
+vi /opt/solr-4.10.3-cdh5.15.1/example/solr/cas_document/core.properties
+	name=my_collection
+cd /opt/solr-4.10.3-cdh5.15.1/example
+java -jar /opt/solr-4.10.3-cdh5.15.1/example/start.jar
+http://localhost:8983/solr/
+
 # solr setting file
 {in container}/etc/default/solr
 
