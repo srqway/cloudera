@@ -1,0 +1,35 @@
+# start zookeeper client
+zookeeper-client
+
+# create
+create /my_persistent_node_path "persistent_data"
+create -e /my_ephemeral_node_path "ephemeral_data"
+create -s /my_sequential_node_path "sequential_data"
+
+# list
+ls /
+
+# set
+set /my_persistent_node_path "persistent_data"
+set /my_ephemeral_node_path "ephemeral_data"
+set /my_sequential_node_path<<number>> "sequential_data"
+
+# get
+get /my_persistent_node_path
+get /my_ephemeral_node_path
+get /my_sequential_node_path<<number>>
+
+# watch
+get /my_persistent_node_path 1
+get /my_ephemeral_node_path 1
+get /my_sequential_node_path<<number>> 1
+
+# status
+stat /my_persistent_node_path
+stat /my_ephemeral_node_path
+stat /my_sequential_node_path<<number>>
+
+# rmr
+rmr /my_persistent_node_path
+rmr /my_ephemeral_node_path
+rmr /my_sequential_node_path<<number>>
